@@ -36,7 +36,7 @@ int main()
   // TODO: Initialize the pid variable.
   pid.Init(0.158006545,0.00025140,0.7226);
   
-  //pid.Init(0.1,0.00000,3.5,false); //P I D and twiddle.
+ 
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
     // The 4 signifies a websocket message
@@ -73,8 +73,10 @@ int main()
           //Low throttle if high cte or high radius of curvature
           double min_speed = 10;
           double throttle = 0.6123;
+		  // vary throttle based on the CTE and steering speed
 		  throttle = throttle - fabs(cte)*0.25 - fabs(steer_value)*0.2;
-          if(speed < min_speed)
+          //Maintain constant throttle for smaller speeds
+		  if(speed < min_speed)
             throttle = 0.2;
           //if(throttle<0.2)
           //  throttle = 0.2;

@@ -9,7 +9,7 @@ using namespace std;
 PID::PID() {}
 
 PID::~PID() {}
-
+//Initialize the coefficients 
 void PID::Init(double Kp, double Ki, double Kd) {
   this->Kp = Kp;
   this->Ki = Ki;
@@ -18,20 +18,18 @@ void PID::Init(double Kp, double Ki, double Kd) {
 }
 
 void PID::UpdateError(double cte) {
-  /*if(this->prev_cte == 0xffff){
-    this->prev_cte = cte;
-  }*/
+  /* For the first time, initilization the previous CTE to the frist value*/
   if(FirstCall == false){
     FirstCall = true;
     prev_cte = cte;
   }
 
+  // Update the PID errors
   this->p_error = cte;
   this->i_error += cte;
   this->d_error =  cte - this->prev_cte;
   this->prev_cte = cte;
-  
-  
+   
 }
 ;
 
